@@ -1,4 +1,4 @@
-import EventEmitter from 'events'
+const EventEmitter = require('events')
 
 class AbstractServiceProvider extends EventEmitter {
   constructor() {
@@ -6,4 +6,4 @@ class AbstractServiceProvider extends EventEmitter {
   }
 }
 
-export default AbstractServiceProvider
+module.exports = AbstractServiceProvider

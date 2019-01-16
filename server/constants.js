@@ -1,8 +1,10 @@
-
 const constants = {
-  GET_DATA_ACTION: 'GET_DATA',
-  DELETE_DATA_ACTION: 'DELETE_DATA',
-  ASCENDING_ORDER: "ASC",
-  DESCENDING_ORDER: "DESC"
+  ASCENDING_ORDER: 'ASC',
+  DESCENDING_ORDER: 'DESC',
+  GET: 'GET',
+  POST: 'POST',
+  PATCH: 'PATCH',
+  DELETE: 'DELETE',
+  MAX_SUPPORTED_PAGE_LENGTH: 5000
 }
-export default constants
+module.exports = constants

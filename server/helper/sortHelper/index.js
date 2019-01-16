@@ -1,12 +1,7 @@
-import heapSort from './heapSort'
-
-const Algorithms = {
-  heapSort
-}
-
 class SortHelper {
   constructor(algorithm) {
-    this.algorithm = new Algorithms[algorithm]()
+    const cls = require('./' + algorithm)
+    this.algorithm = new cls()
   }
 
   sort(arr, columns) {
@@ -15,4 +10,4 @@ class SortHelper {
 
 }
 
-export default SortHelper
+module.exports.SortHelper = SortHelper

@@ -1,4 +1,4 @@
-import constants from '../../constants'
+const constants = require('../../constants')
 
 const decide = (test, other) => test === 0 ? other : test
 const sortString = (a, b) => {
@@ -24,15 +24,28 @@ class HeapSort {
     this.sort = this.sort.bind(this)
     this.heapSort = this.heapSort.bind(this)
     this.heap_root = this.heap_root.bind(this)
-    this.swap = this.swap.bind(this)
+  }
+
+  static swap(input, index_A, index_B) {
+    let swapFrom = Math.min(index_A, index_B)
+    let swapTo = Math.max(index_A, index_B)
+    return [
+      ...input.slice(0, swapFrom),
+      input[swapTo],
+      ...input.slice(swapFrom + 1, swapTo),
+      input[swapFrom],
+      ...input.slice(swapTo + 1)
+    ]
   }
 
   sort(arr, columns) {
+    if (columns === undefined)
+      return arr
     this.toBeOrderedColumns = buildToBeOrderedColumns(columns)
     return this.heapSort(arr)
   }
 
-  heapSort = (input) => {
+  heapSort(input) {
     let localArray = [...input]
     array_length = localArray.length
 
@@ -49,7 +62,7 @@ class HeapSort {
     return localArray
   }
 
-  heap_root = (input, i) => {
+  heap_root(input, i) {
     let localArray = [...input]
     let left = 2 * i + 1
     let right = 2 * i + 2
@@ -70,18 +83,6 @@ class HeapSort {
 
     return localArray
   }
-
-  swap = (input, index_A, index_B) => {
-    let swapFrom = Math.min(index_A, index_B)
-    let swapTo = Math.max(index_A, index_B)
-    return [
-      ...input.slice(0, swapFrom),
-      input[swapTo],
-      ...input.slice(swapFrom + 1, swapTo),
-      input[swapFrom],
-      ...input.slice(swapTo + 1)
-    ]
-  }
 }
 
-export default HeapSort
+module.exports.HeapSort = HeapSort
