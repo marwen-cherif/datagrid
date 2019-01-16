@@ -6,47 +6,6 @@ const sortString = (a, b) => {
 }
 
 let array_length
-const heap_root = (input, i) => {
-  let left = 2 * i + 1
-  let right = 2 * i + 2
-  let max = i
-
-  if (left < array_length && input[left] > input[max]) {
-    max = left
-  }
-
-  if (right < array_length && input[right] > input[max]) {
-    max = right
-  }
-
-  if (max !== i) {
-    swap(input, i, max)
-    heap_root(input, max)
-  }
-}
-
-const swap = (input, index_A, index_B) => {
-  let temp = input[index_A]
-
-  input[index_A] = input[index_B]
-  input[index_B] = temp
-}
-
-const heapSort = (input) => {
-
-  array_length = input.length
-
-  for (let i = Math.floor(array_length / 2); i >= 0; i -= 1) {
-    heap_root(input, i)
-  }
-
-  for (i = input.length - 1; i > 0; i--) {
-    swap(input, 0, i)
-    array_length--
-
-    heap_root(input, 0)
-  }
-}
 
 const buildToBeOrderedColumns = (columns) => {
   return columns.reduce((acc, elem) => {
@@ -61,11 +20,67 @@ const buildToBeOrderedColumns = (columns) => {
 
 class HeapSort {
 
-  sort(arr, columns) {
-    let toBeOrderedColumns = buildToBeOrderedColumns(columns)
+  constructor() {
+    this.sort = this.sort.bind(this)
+    this.heapSort = this.heapSort.bind(this)
+    this.heap_root = this.heap_root.bind(this)
+    this.swap = this.swap.bind(this)
+  }
 
-    // Test
-    return toBeOrderedColumns.reduce((acc, val) => decide(val(a, b), acc), 0)
+  sort(arr, columns) {
+    this.toBeOrderedColumns = buildToBeOrderedColumns(columns)
+    return this.heapSort(arr)
+  }
+
+  heapSort = (input) => {
+    let localArray = [...input]
+    array_length = localArray.length
+
+    for (let i = Math.floor(array_length / 2); i >= 0; i -= 1) {
+      localArray = this.heap_root(localArray, i)
+    }
+
+    for (let i = localArray.length - 1; i > 0; i--) {
+      localArray = this.swap(localArray, 0, i)
+      array_length--
+
+      localArray = this.heap_root(localArray, 0)
+    }
+    return localArray
+  }
+
+  heap_root = (input, i) => {
+    let localArray = [...input]
+    let left = 2 * i + 1
+    let right = 2 * i + 2
+    let max = i
+
+    if (left < array_length && this.toBeOrderedColumns.reduce((acc, val) => decide(val(left, max), acc), 0)) {
+      max = left
+    }
+
+    if (right < array_length && this.toBeOrderedColumns.reduce((acc, val) => decide(val(right, max), acc), 0)) {
+      max = right
+    }
+
+    if (max !== i) {
+      localArray = this.swap(localArray, i, max)
+      localArray = this.heap_root(localArray, max)
+    }
+
+    return localArray
+  }
+
+  swap = (input, index_A, index_B) => {
+    let swapFrom = Math.min(index_A, index_B)
+    let swapTo = Math.max(index_A, index_B)
+    return [
+      ...input.slice(0, swapFrom),
+      input[swapTo],
+      ...input.slice(swapFrom + 1, swapTo),
+      input[swapFrom],
+      ...input.slice(swapTo + 1)
+    ]
   }
 }
 
