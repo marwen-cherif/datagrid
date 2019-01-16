@@ -1,0 +1,9 @@
+const constants = {
+  SORT_COLUMNS: 'SORT_COLUMNS',
+  EDIT_CELL: 'EDIT_CELL',
+  REMOVE_ROW: 'REMOVE_ROW',
+  REORDER_COLUMN: 'REORDER_COLUMN',
+  ASCENDING_ORDER: "ASC",
+  DESCENDING_ORDER: "DESC"
+}
+export default constants

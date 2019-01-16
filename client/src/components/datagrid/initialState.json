@@ -1,0 +1,30 @@
+{
+  "url": "",
+  "data": [
+    {
+      "column1": "value1",
+      "column2": "value2",
+      "column3": "value3"
+    }
+  ],
+  "metadata": {
+    "columns": [
+      {
+        "name": "column1",
+        "order": 0,
+        "sort": "ASC"
+      },
+      {
+        "name": "column2",
+        "order": 1,
+        "sort": "DESC"
+      },
+      {
+        "name": "column3",
+        "order": 3
+      }
+    ],
+    "offset": 0,
+    "limit": 99
+  }
+}
