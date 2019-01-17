@@ -2,7 +2,7 @@ const express = require('express')
 const validate = require('express-validation')
 // import taskCtrl from '../controllers/tasks'
 // import validations from '../providers/validation/tasks'
-const { routeDefinitions, actions } = require('./configuration')
+const { routeDefinitions } = require('./configuration')
 const { curry } = require('ramda')
 const constants = require('../constants')
 
