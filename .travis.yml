@@ -1,0 +1,17 @@
+language: node_js
+node_js:
+  - 10
+  - 9
+  - 8
+  - 7
+  - 6
+before_install:
+  - sudo apt-get install -y libxml2-dev
+addons:
+  apt:
+    update: true
+install:
+  - npm install
+  - cd client && npm install
+script:
+  - npm test
