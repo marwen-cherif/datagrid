@@ -12,6 +12,6 @@ addons:
     update: true
 install:
   - npm install
-  - cd client && npm install
+  - cd client && npm install && cd ..
 script:
   - npm test
