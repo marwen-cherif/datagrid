@@ -25,3 +25,5 @@ yarn-error.log*
 .idea
 
 client/node_modules
+
+data.json

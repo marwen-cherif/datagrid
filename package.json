@@ -3,14 +3,22 @@
   "version": "1.0.0",
   "scripts": {
     "client": "cd client && npm start",
-    "server": "nodemon server.js",
-    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
+    "server": "nodemon %NODE_DEBUG_OPTION% server/index.js",
+    "test": "mocha server/**/*test.js --recursive && cd client && npm test && cd ..",
+    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
+    "generate-data": "node %NODE_DEBUG_OPTION% server/generateData.js"
   },
   "dependencies": {
     "body-parser": "^1.18.3",
-    "express": "^4.16.4"
+    "express": "^4.16.4",
+    "express-validator": "^5.3.1",
+    "lorem-ipsum": "^1.0.6",
+    "ramda": "^0.26.1",
+    "uuid": "^3.3.2"
   },
   "devDependencies": {
-    "concurrently": "^4.0.1"
+    "chai": "^4.2.0",
+    "concurrently": "^4.0.1",
+    "mocha": "^5.2.0"
   }
 }
