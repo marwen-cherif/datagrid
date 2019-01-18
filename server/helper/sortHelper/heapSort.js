@@ -1,23 +1,5 @@
 const constants = require('../../constants')
 
-const decide = (test, other) => test === 0 ? other : test
-const sortString = (a, b) => {
-  return ((a < b) ? -1 : ((a > b) ? 1 : 0))
-}
-
-let array_length
-
-const buildToBeOrderedColumns = (columns) => {
-  return columns.reduce((acc, elem) => {
-    if (elem.order === constants.DESCENDING_ORDER) {
-      acc = [...acc, (a, b) => sortString(a, b)]
-    } else if (elem.order === constants.ASCENDING_ORDER) {
-      acc = [...acc, (a, b) => -1 * sortString(a, b)]
-    }
-    return acc
-  }, [])
-}
-
 class HeapSort {
 
   constructor() {
@@ -54,7 +36,7 @@ class HeapSort {
     }
 
     for (let i = localArray.length - 1; i > 0; i--) {
-      localArray = this.swap(localArray, 0, i)
+      localArray = HeapSort.swap(localArray, 0, i)
       array_length--
 
       localArray = this.heap_root(localArray, 0)
@@ -68,21 +50,55 @@ class HeapSort {
     let right = 2 * i + 2
     let max = i
 
-    if (left < array_length && this.toBeOrderedColumns.reduce((acc, val) => decide(val(left, max), acc), 0)) {
+    let test = this.toBeOrderedColumns.reduce((acc, val) => {
+      if (localArray[left])
+        return decide(val(localArray[left], localArray[max]), acc)
+      return acc
+    }, 0)
+    if (left < array_length && test > 0) {
       max = left
     }
 
-    if (right < array_length && this.toBeOrderedColumns.reduce((acc, val) => decide(val(right, max), acc), 0)) {
+    test = this.toBeOrderedColumns.reduce((acc, val) => {
+      if (localArray[right])
+        return decide(val(localArray[right], localArray[max]), acc)
+      return acc
+    }, 0)
+    if (right < array_length && test > 0) {
       max = right
     }
 
     if (max !== i) {
-      localArray = this.swap(localArray, i, max)
+      localArray = HeapSort.swap(localArray, i, max)
       localArray = this.heap_root(localArray, max)
     }
 
     return localArray
   }
+}
+
+const decide = (test, other) => test === 0 ? other : test
+const sortValue = (a, b) => {
+  let result = null
+  if (isNaN(a) || isNaN(b)) {
+    result = ((a.toLowerCase() < b.toLowerCase()) ? -1 : ((a.toLowerCase() > b.toLowerCase()) ? 1 : 0))
+  } else {
+    result = ((a < b) ? -1 : ((a > b) ? 1 : 0))
+  }
+  return result
+}
+
+let array_length
+
+const buildToBeOrderedColumns = (columns) => {
+  return columns.reduce((acc, column) => {
+    if (column.order === constants.DESCENDING_ORDER) {
+      acc = [...acc, (a, b) => -1 * sortValue(a[column.name], b[column.name])]
+    } else if (column.order === constants.ASCENDING_ORDER) {
+      acc = [...acc, (a, b) => sortValue(a[column.name], b[column.name])]
+    }
+    return acc
+  }, [])
 }
 
 module.exports.HeapSort = HeapSort

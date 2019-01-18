@@ -9,7 +9,7 @@ const routeDefinitions = [
   {
     name: 'get_data',
     route: '/data',
-    method: 'GET',
+    method: 'POST',
     action: actions.GET_DATA,
     provider: require('../providers/data')
   },

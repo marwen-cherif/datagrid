@@ -18,4 +18,4 @@ function generate(nbrOfItems = 100000) {
   fs.writeFileSync('data.json', JSON.stringify(data))
 }
 
-generate()
+generate(10)
