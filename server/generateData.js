@@ -1,6 +1,7 @@
 const v4 = require('uuid')
 const loremIpsum = require('lorem-ipsum')
 const fs = require('fs')
+const config = require('config')
 
 function generate(nbrOfItems = 100000) {
   let data = []
@@ -18,4 +19,4 @@ function generate(nbrOfItems = 100000) {
   fs.writeFileSync('data.json', JSON.stringify(data))
 }
 
-generate(10)
+generate(config.get('numberOfGeneratedRows'))
