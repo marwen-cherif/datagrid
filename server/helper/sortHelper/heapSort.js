@@ -29,15 +29,15 @@ class HeapSort {
 
   heapSort(input) {
     let localArray = [...input]
-    array_length = localArray.length
+    this.array_length = localArray.length
 
-    for (let i = Math.floor(array_length / 2); i >= 0; i -= 1) {
+    for (let i = Math.floor(this.array_length / 2); i >= 0; i -= 1) {
       localArray = this.heap_root(localArray, i)
     }
 
     for (let i = localArray.length - 1; i > 0; i--) {
       localArray = HeapSort.swap(localArray, 0, i)
-      array_length--
+      this.array_length--
 
       localArray = this.heap_root(localArray, 0)
     }
@@ -55,7 +55,7 @@ class HeapSort {
         return decide(val(localArray[left], localArray[max]), acc)
       return acc
     }, 0)
-    if (left < array_length && test > 0) {
+    if (left < this.array_length && test > 0) {
       max = left
     }
 
@@ -64,7 +64,7 @@ class HeapSort {
         return decide(val(localArray[right], localArray[max]), acc)
       return acc
     }, 0)
-    if (right < array_length && test > 0) {
+    if (right < this.array_length && test > 0) {
       max = right
     }
 
@@ -88,8 +88,6 @@ const sortValue = (a, b) => {
   return result
 }
 
-let array_length
-
 const buildToBeOrderedColumns = (columns) => {
   return columns.reduce((acc, column) => {
     if (column.order === constants.DESCENDING_ORDER) {
@@ -99,6 +97,7 @@ const buildToBeOrderedColumns = (columns) => {
     }
     return acc
   }, [])
+    .reverse()
 }
 
 module.exports.HeapSort = HeapSort
