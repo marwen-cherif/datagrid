@@ -4,6 +4,7 @@
   "scripts": {
     "client": "cd client && npm start",
     "server": "nodemon %NODE_DEBUG_OPTION% server/index.js",
+    "test-server": "mocha server/**/*test.js --recursive",
     "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
     "generate-data": "node %NODE_DEBUG_OPTION% server/generateData.js"
   },
