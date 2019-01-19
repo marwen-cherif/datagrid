@@ -19,20 +19,27 @@ class Data extends AbstractServiceProvider {
           body('offset', 'offset is required').exists(),
           body('pageLength', 'pageLength should be numeric').isNumeric(),
           body('pageLength', 'pageLength is required').exists(),
-          body('columns').isArray().optional()
+          body('sort').isArray().optional()
         ]
       }
     }
   }
 
-  getData({ offset, pageLength, columns = [] }) {
+  getData({ offset, pageLength, sort = [] }) {
     let data = require('../../data.json')
     let sorter = new QuickSort()
-    let result = sorter.sort([...data], columns)
-      .slice(offset, pageLength + 1)
-
+    let result = [...data]
+    if (sort.length) {
+      result = sorter.sort([...data], sort.filter(filterSortArray, []))
+    }
+    result = result.slice(offset, pageLength)
     this.emit(actions.GET_DATA + '_DONE', null, result)
   }
+}
+
+function filterSortArray(elem) {
+  let { name, order } = elem
+  return name !== undefined && order !== undefined
 }
 
 module.exports = Data

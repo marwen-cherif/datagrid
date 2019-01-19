@@ -17,11 +17,15 @@ class QuickSort {
   sort(arr, columns) {
     console.log(`Start sorting ${arr.length} element`)
     let now = new Date()
-    if (columns === undefined)
+    let duration = null
+    if (!columns.length || columns === undefined) {
+      duration = new Date() - now
+      console.log(`Sorting finished in ${duration} ms`)
       return arr
+    }
     this.toBeOrderedColumns = buildToBeOrderedColumns(columns)
     let result = this.quickSort(arr)
-    let duration = new Date() - now
+    duration = new Date() - now
     console.log(`Sorting finished in ${duration} ms`)
     return result
   }
