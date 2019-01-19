@@ -8,9 +8,9 @@ function generate(nbrOfItems = 100000) {
   for (let i = 0; i < nbrOfItems; i++) {
     data = [...data, {
       id: v4(),
-      column1: loremIpsum({ count: 5 }),
-      column2: loremIpsum({ count: 10 }),
-      column3: loremIpsum({ count: 15 })
+      column1: loremIpsum({ count: 1 }),
+      column2: loremIpsum({ count: 1 }),
+      column3: Math.floor(Math.random() * Math.floor(50000))
     }]
   }
   if (fs.existsSync('data.json')) {

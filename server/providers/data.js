@@ -1,6 +1,6 @@
 const AbstractServiceProvider = require('./AbstractServiceProvider')
 const { actions } = require('../routes/configuration')
-const { HeapSort } = require('../helper/sortHelper/heapSort')
+const { QuickSort } = require('../helper/sortHelper/quickSort')
 const { body } = require('express-validator/check')
 
 class Data extends AbstractServiceProvider {
@@ -26,14 +26,12 @@ class Data extends AbstractServiceProvider {
   }
 
   getData({ offset, pageLength, columns = [] }) {
-
     let data = require('../../data.json')
-    let sorter = new HeapSort()
-    data = sorter.sort(data, columns)
+    let sorter = new QuickSort()
+    let result = sorter.sort([...data], columns)
+      .slice(offset, pageLength + 1)
 
-    data = data.filter((item, index) => (index + 1 >= offset && index + 1 <= offset + pageLength))
-
-    this.emit(actions.GET_DATA + '_DONE', null, data)
+    this.emit(actions.GET_DATA + '_DONE', null, result)
   }
 }
 
