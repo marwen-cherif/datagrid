@@ -1,5 +1,5 @@
 const AbstractServiceProvider = require('./AbstractServiceProvider')
-const { actions } = require('../routes/configuration')
+const { actions } = require('../routeResolver/configuration')
 const { QuickSort } = require('../helper/sortHelper/quickSort')
 const { body } = require('express-validator/check')
 
