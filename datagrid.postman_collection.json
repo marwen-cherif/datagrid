@@ -1,0 +1,38 @@
+{
+	"info": {
+		"_postman_id": "8c40f34c-a40b-492f-b07b-fae23cb0775a",
+		"name": "datagrid",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost:5000/api?route=get_data&offset=0&pageLength=100",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"offset\": 0,\n\t\"pageLength\": 100,\n\t\"sort\": [\n\t\t{\"label\": \"ID\", \"name\": \"id\", \"rowIdentifier\": true},\n\t\t{\"label\": \"Column1\", \"name\": \"column1\"},\n\t\t{\"label\": \"Column2\", \"name\": \"column2\"},\n\t\t{\"label\": \"Column3\", \"name\": \"column3\", \"order\": \"ASC\"}\n\t]\n}"
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/data",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"data"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -3,7 +3,17 @@ const constants = {
   EDIT_CELL: 'EDIT_CELL',
   REMOVE_ROW: 'REMOVE_ROW',
   REORDER_COLUMN: 'REORDER_COLUMN',
-  ASCENDING_ORDER: "ASC",
-  DESCENDING_ORDER: "DESC"
+  ASCENDING_ORDER: 'ASC',
+  DESCENDING_ORDER: 'DESC',
+  SUPPORTED_PAGE_LENGTH: [
+    100,
+    500,
+    1000,
+    1500,
+    2000,
+    2500,
+    5000,
+    10000
+  ]
 }
 export default constants

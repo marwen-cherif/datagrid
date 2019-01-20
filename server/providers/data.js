@@ -29,11 +29,12 @@ class Data extends AbstractServiceProvider {
     let data = require('../../data.json')
     let sorter = new QuickSort()
     let result = [...data]
+    let totalRecords = result.length
     if (sort.length) {
       result = sorter.sort([...data], sort.filter(filterSortArray, []))
     }
-    result = result.slice(offset, pageLength)
-    this.emit(actions.GET_DATA + '_DONE', null, result)
+    result = result.slice(offset, offset + pageLength)
+    this.emit(actions.GET_DATA + '_DONE', null, { data: result, totalRecords })
   }
 }
 

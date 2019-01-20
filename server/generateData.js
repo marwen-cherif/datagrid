@@ -10,7 +10,9 @@ function generate(nbrOfItems = 100000) {
       id: v4(),
       column1: loremIpsum({ count: 1 }),
       column2: loremIpsum({ count: 1 }),
-      column3: Math.floor(Math.random() * Math.floor(50000))
+      column3: Math.floor(Math.random() * Math.floor(50000)),
+      column4: Math.floor(Math.random() * Math.floor(50000)),
+      column5: Math.floor(Math.random() * Math.floor(50000))
     }]
   }
   if (fs.existsSync('data.json')) {
