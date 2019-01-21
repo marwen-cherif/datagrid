@@ -1,6 +1,6 @@
 const AbstractServiceProvider = require('./AbstractServiceProvider')
-const { actions } = require('../routes/configuration')
-const { HeapSort } = require('../helper/sortHelper/heapSort')
+const { actions } = require('../routeResolver/configuration')
+const { QuickSort } = require('../helper/sortHelper/quickSort')
 const { body } = require('express-validator/check')
 
 class Data extends AbstractServiceProvider {
@@ -19,22 +19,28 @@ class Data extends AbstractServiceProvider {
           body('offset', 'offset is required').exists(),
           body('pageLength', 'pageLength should be numeric').isNumeric(),
           body('pageLength', 'pageLength is required').exists(),
-          body('columns').isArray().optional()
+          body('sort').isArray().optional()
         ]
       }
     }
   }
 
-  getData({ offset, pageLength, columns = [] }) {
-
+  getData({ offset, pageLength, sort = [] }) {
     let data = require('../../data.json')
-    let sorter = new HeapSort()
-    data = sorter.sort(data, columns)
-
-    data = data.filter((item, index) => (index + 1 >= offset && index + 1 <= offset + pageLength))
-
-    this.emit(actions.GET_DATA + '_DONE', null, data)
+    let sorter = new QuickSort()
+    let result = [...data]
+    let totalRecords = result.length
+    if (sort.length) {
+      result = sorter.sort([...data], sort.filter(filterSortArray, []))
+    }
+    result = result.slice(offset, offset + pageLength)
+    this.emit(actions.GET_DATA + '_DONE', null, { data: result, totalRecords })
   }
+}
+
+function filterSortArray(elem) {
+  let { name, order } = elem
+  return name !== undefined && order !== undefined
 }
 
 module.exports = Data

@@ -27,7 +27,7 @@ const providerInject = (routeDefinition, getParams, req, res) => {
       provider.on(routeDefinition.action + '_DONE', function (err, result) {
         if (err)
           res.json({ status: 500, message: err })
-        res.json({ status: 200, data: result })
+        res.json({ status: 200, ...result })
       })
       provider.emit(routeDefinition.action, getParams(req))
     })
@@ -42,22 +42,19 @@ for (const routeDefinition of routeDefinitions) {
       router.route(routeDefinition.route)
         .get(
           routeDefinition.provider ? routeDefinition.provider.validate(routeDefinition.name) : (f) => (f),
-          curry(providerInject)(routeDefinition, (req) => req.query),
-        )
+          curry(providerInject)(routeDefinition, (req) => req.query))
       break
     case constants.POST:
       router.route(routeDefinition.route)
         .post(
           routeDefinition.provider ? routeDefinition.provider.validate(routeDefinition.name) : (f) => (f),
-          curry(providerInject)(routeDefinition, (req) => req.body),
-        )
+          curry(providerInject)(routeDefinition, (req) => req.body))
       break
     case constants.DELETE:
       router.route(routeDefinition.route)
         .delete(
           routeDefinition.provider ? routeDefinition.provider.validate(routeDefinition.name) : (f) => (f),
-          curry(providerInject)(routeDefinition, (req) => req.query)
-        )
+          curry(providerInject)(routeDefinition, (req) => req.query))
       break
     case constants.PATCH:
       router.route(routeDefinition.route)

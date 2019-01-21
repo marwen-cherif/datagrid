@@ -28,6 +28,8 @@ class HeapSort {
   }
 
   heapSort(input) {
+    let now = new Date()
+    console.log(`Start sorting ${input.length} element`)
     let localArray = [...input]
     this.array_length = localArray.length
 
@@ -41,6 +43,8 @@ class HeapSort {
 
       localArray = this.heap_root(localArray, 0)
     }
+    let duration = new Date() - now
+    console.log(`Sorting finished in ${duration} ms`)
     return localArray
   }
 

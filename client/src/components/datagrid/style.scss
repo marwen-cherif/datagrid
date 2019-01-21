@@ -1,0 +1,87 @@
+.table-container {
+  display: inline-block;
+  height: 100%;
+  padding-top: 1.875em;
+  position: relative;
+}
+
+.table-container > div {
+  border-color: #888;
+  border-style: solid;
+  border-width: 1px 1px 2px 1px;
+  height: 1.7em;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.table-container .loader {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: dimgrey;
+  opacity: 0.5;
+}
+
+table {
+  display: block;
+  height: 80%;
+  overflow-y: auto;
+}
+
+th {
+  padding: 0 5px;
+  text-align: center;
+}
+
+th:first-child > div {
+  border-left: none;
+  padding-left: 7px;
+}
+
+th > div {
+  border-left: 2px solid #888;
+  line-height: 1.875em;
+  margin-left: -6px;
+  padding-left: 5px;
+  position: absolute;
+  top: 0;
+}
+
+td {
+  border-color: #888;
+  border-style: solid;
+  border-width: 0 1px 2px 1px;
+  padding: 5px;
+  text-align: left;
+}
+
+.fas.fa-sort-down, .fas.fa-sort-up, .fas.fa-sort {
+  cursor: pointer;
+}
+
+.table-container .paginator {
+  position: relative;
+
+  .paginatorPage {
+    color: dimgrey;
+    font-weight: bold;
+    padding: 5px;
+    cursor: pointer;
+  }
+
+  .paginatorPage.current {
+    color: deepskyblue;
+  }
+}
+
+.pageSelector {
+  display: inline-block;
+  padding: 1px 10px 1px 10px;
+}
+
+.pageLengthSelector {
+  display: inline-block;
+  padding: 0 10px 0 10px;
+}
