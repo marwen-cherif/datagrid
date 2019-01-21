@@ -1,8 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import DataGrid from './DataGrid'
+import DataGridBody from './Body'
 import { mount } from 'enzyme'
-import Api from './api'
 
 const DataGridConfiguration = {
   columns: [
@@ -12,12 +11,7 @@ const DataGridConfiguration = {
     { label: 'Column4', name: 'column4', style: { minWidth: '80px' } },
     { label: 'Column5', name: 'column5', style: { minWidth: '80px' } }
   ],
-  url: '/api/data'
-}
-
-const responseMock = {
-  'status': 200,
-  'data': [
+  rows: [
     {
       'id': '0307f70d-8ed2-4ba9-843b-0219eb9a6431',
       'column1': 'Velit laborum velit commodo nulla ex cupidatat consequat proident irure.',
@@ -99,14 +93,18 @@ const responseMock = {
       'column5': 19908
     }
   ],
-  'totalRecords': 1000
+  url: '/api/data'
 }
 
-it('Should have de table', () => {
-  const callMock = jest.spyOn(Api, 'call')
-  callMock.mockImplementation(({}, callback = f => f) => callback(null, responseMock))
+it('Test body datagrid', () => {
+  let { columns, rows } = DataGridConfiguration
+  const table = document.createElement('table')
+  const wrapper = mount(<DataGridBody
+    rows={rows}
+    columns={columns}
+  />, { attachTo: table })
 
-  const wrapper = mount(<DataGrid config={DataGridConfiguration} />)
-  expect(wrapper.find('.dataGridTable')).to.have.lengthOf(1)
-  expect(wrapper.find('tr')).to.have.lengthOf(11)
+  expect(wrapper.find('td'))
+    .to.have.lengthOf(50)
+
 })

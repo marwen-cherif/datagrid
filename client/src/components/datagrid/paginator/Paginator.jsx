@@ -30,9 +30,7 @@ Paginator.propTypes = {
 Paginator.defaultProps = {
   offset: 0,
   pageLength: 100,
-  totalRecords: 0,
-  goTo: f => f,
-  onPageLengthChange: f => f
+  totalRecords: 0
 }
 
 export default Paginator

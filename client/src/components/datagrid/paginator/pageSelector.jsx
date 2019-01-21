@@ -15,13 +15,17 @@ const PageSelector = ({ pageLength, totalRecords, offset, goTo }) => {
 
     switch (i) {
       case '...':
-        pages.push(<span key={v4()} className={className}>{i}</span>)
+        pages.push(<span key={v4()}
+                         className={className}>{i}</span>)
         break
       default:
-        debugger
         let nextOffset = (parseInt(i) - 1) * pageLength
-        pages.push(<span key={v4()} className={className}
-                         onClick={() => goTo(nextOffset)}>{i}</span>)
+        pages.push(
+          <span
+            key={v4()}
+            className={className}
+            onClick={() => goTo(nextOffset)}>{i}</span>
+        )
     }
   })
   pages = decoratePages(pages, goTo, offset, pageLength, maxPages)
@@ -34,20 +38,23 @@ const PageSelector = ({ pageLength, totalRecords, offset, goTo }) => {
 }
 
 function decoratePages(pages, goTo, offset, pageLength, maxPages) {
+  let lastPage = maxPages * pageLength - pageLength
+  let previousPage = (offset - pageLength) < 0 ? 0 : offset - pageLength
+  let nextPage = (offset + pageLength) > lastPage ? lastPage : (offset + pageLength)
   return [
     <span key={v4()}
           className='paginatorPage'
           onClick={() => goTo(0)}> {'<<'} </span>,
     <span key={v4()}
           className='paginatorPage'
-          onClick={() => goTo(offset - pageLength)}> {'<'} </span>,
+          onClick={() => goTo(previousPage)}> {'<'} </span>,
     ...pages,
     <span key={v4()}
           className='paginatorPage'
-          onClick={() => goTo(offset + pageLength)}> {'>'} </span>,
+          onClick={() => goTo(nextPage)}> {'>'} </span>,
     <span key={v4()}
           className='paginatorPage'
-          onClick={() => goTo(maxPages * pageLength - pageLength)}> {'>>'} </span>
+          onClick={() => goTo(lastPage)}> {'>>'} </span>
   ]
 }
 
@@ -61,8 +68,7 @@ PageSelector.propTypes = {
 PageSelector.defaultProps = {
   offset: 0,
   pageLength: 100,
-  totalRecords: 0,
-  goTo: f => f,
+  totalRecords: 0
 }
 
 export default PageSelector

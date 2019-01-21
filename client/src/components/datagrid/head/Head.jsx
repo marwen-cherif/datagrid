@@ -24,8 +24,7 @@ DataGridHead.propTypes = {
 
 DataGridHead.defaultProps = {
   sort: [],
-  columns: [],
-  onSort: f => f,
+  columns: []
 }
 
 export default DataGridHead

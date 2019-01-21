@@ -25,8 +25,7 @@ SortIcon.propTypes = {
 
 SortIcon.defaultProps = {
   sort: [],
-  columns: [],
-  onSort: f => f,
+  columns: []
 }
 
 export default SortIcon

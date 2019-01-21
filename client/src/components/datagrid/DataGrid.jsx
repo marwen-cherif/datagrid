@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import v4 from 'uuid'
-import Loader from './loader/index'
-import DataGridHead from './head/index'
-import DataGridBody from './body/index'
+import Loader from './loader/Loader'
+import DataGridHead from './head/Head'
+import DataGridBody from './body/Body'
 import Paginator from './paginator'
 import { calculateCurrentPage, calculateMaximumPages } from './helpers/paginatorHelper'
-import apiCall from './api'
+import Api from './api'
 
 import './style.scss'
 
@@ -33,12 +33,11 @@ export default class DataGrid extends Component {
 
   componentDidMount() {
     let self = this
-    apiCall(this.state, (err, res) => {
+    Api.call(this.state, (err, res) => {
       if (err)
         return
-      let rows = res.data.data
-      let { totalRecords } = res.data
-      self.setState({ ...self.state, rows, loading: false, totalRecords })
+      let { data, totalRecords } = res
+      self.setState({ ...self.state, rows: data, loading: false, totalRecords })
     })
   }
 
@@ -65,19 +64,17 @@ export default class DataGrid extends Component {
     sort = sort.filter((elem) => elem.order)
     this.setState({ ...this.state, loading: true })
 
-    apiCall(this.state, (err, res) => {
+    Api.call(this.state, (err, res) => {
       if (err)
         return
-      let rows = res.data.data
-      let { totalRecords } = res.data
+      let { data, totalRecords } = res
       self.setState({
-        ...self.state, sort, rows, loading: false, totalRecords
+        ...self.state, sort, rows: data, loading: false, totalRecords
       })
     })
   }
 
   goTo(nextOffset) {
-    debugger
     let self = this
     let { pageLength, totalRecords } = this.state
     if (nextOffset < 0 || calculateCurrentPage(nextOffset, pageLength) > calculateMaximumPages(pageLength, totalRecords))
@@ -85,13 +82,12 @@ export default class DataGrid extends Component {
     this.setState({ ...this.state, loading: true })
 
     let newState = { ...this.state, offset: nextOffset }
-    apiCall(newState, (err, res) => {
+    Api.call(newState, (err, res) => {
       if (err)
         return
-      let rows = res.data.data
-      let { totalRecords } = res.data
+      let { data, totalRecords } = res
       self.setState({
-        ...newState, rows, loading: false, totalRecords
+        ...newState, rows: data, loading: false, totalRecords
       })
     })
   }
@@ -102,14 +98,13 @@ export default class DataGrid extends Component {
     this.setState({ ...this.state, loading: true })
 
     let newState = { ...this.state, offset: 0, pageLength: newPageLength }
-    apiCall(newState, (err, res) => {
+    Api.call(newState, (err, res) => {
       if (err)
         return
-      let rows = res.data.data
-      let { totalRecords } = res.data
+      let { data, totalRecords } = res
       self.setState({
         ...newState,
-        rows,
+        rows: data,
         loading: false,
         totalRecords
       })
