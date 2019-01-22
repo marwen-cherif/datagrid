@@ -1,8 +1,9 @@
 import React from 'react'
 import v4 from 'uuid'
 import PropTypes from 'prop-types'
+import { curry } from 'ramda'
 
-const DataGridBody = ({ rows = [], columns = [] }) => {
+const DataGridBody = ({ rows = [], columns = [], onRowSelected }) => {
   return <tbody>
   {
     rows.map((row) =>
@@ -17,6 +18,13 @@ const DataGridBody = ({ rows = [], columns = [] }) => {
             </td>
           )
         }
+        <td>
+          <input
+            type="checkbox"
+            checked={row.selected}
+            onChange={curry(onRowSelected)(row)}
+          />
+        </td>
       </tr>
     )
   }
@@ -25,7 +33,8 @@ const DataGridBody = ({ rows = [], columns = [] }) => {
 
 DataGridBody.propTypes = {
   rows: PropTypes.array.isRequired,
-  columns: PropTypes.array.isRequired
+  columns: PropTypes.array.isRequired,
+  onRowSelected: PropTypes.func.isRequired
 }
 
 DataGridBody.defaultProps = {

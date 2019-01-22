@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import v4 from 'uuid'
-import Loader from './loader/index'
-import DataGridHead from './head/index'
-import DataGridBody from './body/index'
+import Loader from './loader/Loader'
+import DataGridHead from './head/Head'
+import DataGridBody from './body/Body'
 import Paginator from './paginator'
 import { calculateCurrentPage, calculateMaximumPages } from './helpers/paginatorHelper'
-import apiCall from './api'
+import Api from './api'
 
 import './style.scss'
 
@@ -24,21 +24,23 @@ export default class DataGrid extends Component {
       sort: [],
       rows: [],
       loading: true,
-      totalRecords: 0
+      totalRecords: 0,
+      columnIdentifier: columns.reduce((acc, elem) => {
+        if (elem.identifier) {
+          acc = elem.name
+        }
+        return acc
+      }, null)
     }
-    this.sortColumn = this.sortColumn.bind(this)
-    this.goTo = this.goTo.bind(this)
-    this.onPageLengthChange = this.onPageLengthChange.bind(this)
   }
 
   componentDidMount() {
     let self = this
-    apiCall(this.state, (err, res) => {
+    Api.call(this.state, (err, res) => {
       if (err)
         return
-      let rows = res.data.data
-      let { totalRecords } = res.data
-      self.setState({ ...self.state, rows, loading: false, totalRecords })
+      let { data, totalRecords } = res
+      self.setState({ ...self.state, rows: data, loading: false, totalRecords })
     })
   }
 
@@ -65,19 +67,17 @@ export default class DataGrid extends Component {
     sort = sort.filter((elem) => elem.order)
     this.setState({ ...this.state, loading: true })
 
-    apiCall(this.state, (err, res) => {
+    Api.call({ ...this.state, sort }, (err, res) => {
       if (err)
         return
-      let rows = res.data.data
-      let { totalRecords } = res.data
+      let { data, totalRecords } = res
       self.setState({
-        ...self.state, sort, rows, loading: false, totalRecords
+        ...self.state, sort, rows: data, loading: false, totalRecords
       })
     })
   }
 
   goTo(nextOffset) {
-    debugger
     let self = this
     let { pageLength, totalRecords } = this.state
     if (nextOffset < 0 || calculateCurrentPage(nextOffset, pageLength) > calculateMaximumPages(pageLength, totalRecords))
@@ -85,13 +85,12 @@ export default class DataGrid extends Component {
     this.setState({ ...this.state, loading: true })
 
     let newState = { ...this.state, offset: nextOffset }
-    apiCall(newState, (err, res) => {
+    Api.call(newState, (err, res) => {
       if (err)
         return
-      let rows = res.data.data
-      let { totalRecords } = res.data
+      let { data, totalRecords } = res
       self.setState({
-        ...newState, rows, loading: false, totalRecords
+        ...newState, rows: data, loading: false, totalRecords
       })
     })
   }
@@ -102,41 +101,73 @@ export default class DataGrid extends Component {
     this.setState({ ...this.state, loading: true })
 
     let newState = { ...this.state, offset: 0, pageLength: newPageLength }
-    apiCall(newState, (err, res) => {
+    Api.call(newState, (err, res) => {
       if (err)
         return
-      let rows = res.data.data
-      let { totalRecords } = res.data
+      let { data, totalRecords } = res
       self.setState({
         ...newState,
-        rows,
+        rows: data,
         loading: false,
         totalRecords
       })
     })
   }
 
+  onColumnsChange(columns) {
+    this.setState({ ...this.state, columns })
+  }
+
+  onRowSelected(row, event) {
+    const target = event.target
+    const value = target.type === 'checkbox' ? target.checked : target.value
+    let { rows, columnIdentifier } = this.state
+    let newState = {
+      ...this.state,
+      rows: rows.map((elem) => {
+        if (elem[columnIdentifier] === row[columnIdentifier]) {
+          elem = { ...row, selected: value === true }
+        }
+        return elem
+      })
+    }
+    this.setState(newState)
+  }
+
+  onRowsRemove() {
+    debugger
+    let { rows } = this.state
+    this.setState({
+      ...this.state,
+      rows: rows.filter((elem) => elem.selected !== true)
+    })
+  }
+
   render() {
-    let { rows, columns, sort, loading, offset, pageLength, totalRecords } = this.state
+    let { rows, columns, sort, loading, offset, pageLength, totalRecords, columnIdentifier } = this.state
     return <div className="table-container">
       <Loader loading={loading} />
       <table className="dataGridTable">
         <DataGridHead
           sort={sort}
           columns={columns}
-          onSort={(column) => this.sortColumn(column)}
+          onSort={this.sortColumn.bind(this)}
+          onColumnsChange={this.onColumnsChange.bind(this)}
+          onRowsRemove={this.onRowsRemove.bind(this)}
         />
         <DataGridBody
           rows={rows}
           columns={columns}
+          onRowSelected={(row, event) => this.onRowSelected.bind(this)(row, event)}
+          columnIdentifier={columnIdentifier}
         />
       </table>
       <Paginator
         offset={offset}
         pageLength={pageLength}
         totalRecords={totalRecords}
-        goTo={this.goTo}
-        onPageLengthChange={this.onPageLengthChange}
+        goTo={this.goTo.bind(this)}
+        onPageLengthChange={this.onPageLengthChange.bind(this)}
       />
     </div>
   }

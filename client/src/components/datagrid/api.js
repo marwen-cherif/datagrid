@@ -1,18 +1,18 @@
 import axios from 'axios'
 
-function apiCall({ url, offset, pageLength, sort }, callback = f => f) {
-  axios.post(url, {
-    offset,
-    pageLength,
-    sort
-  })
-    .then(function (res) {
-      callback(null, res)
+export default class Api {
+  static call({ url, offset, pageLength, sort }, callback = f => f) {
+    axios.post(url, {
+      offset,
+      pageLength,
+      sort
     })
-    .catch(function (error) {
-      console.error(error)
-      callback(error)
-    })
+      .then(function ({ data }) {
+        callback(null, data)
+      })
+      .catch(function (error) {
+        console.error(error)
+        callback(error)
+      })
+  }
 }
-
-export default apiCall
