@@ -4,7 +4,7 @@ import DataGrid from './components/datagrid'
 
 const DataGridConfiguration = {
   columns: [
-    { label: 'ID', name: 'id', rowIdentifier: true },
+    { label: 'ID', name: 'id', identifier: true },
     { label: 'Column2', name: 'column2' },
     { label: 'Column3', name: 'column3', style: { minWidth: '80px' } },
     { label: 'Column4', name: 'column4', style: { minWidth: '80px' } },

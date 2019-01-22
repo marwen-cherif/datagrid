@@ -27,3 +27,5 @@ yarn-error.log*
 client/node_modules
 
 data.json
+
+.nyc_output

@@ -102,9 +102,10 @@ it('Test body datagrid', () => {
   const wrapper = mount(<DataGridBody
     rows={rows}
     columns={columns}
+    onRowSelected={(row, event) => (row, event) => {}}
   />, { attachTo: table })
 
   expect(wrapper.find('td'))
-    .to.have.lengthOf(50)
+    .to.have.lengthOf(60)
 
 })

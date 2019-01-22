@@ -1,5 +1,4 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
 import DataGridHead from './Head'
 import { mount } from 'enzyme'
 
@@ -22,6 +21,8 @@ it('Test head datagrid', () => {
     sort={[]}
     columns={columns}
     onSort={(column) => clickedColumn = column}
+    onColumnsChange={f => f}
+    onRowsRemove={f => f}
   />, { attachTo: table })
   wrapper.find('i.fas.fa-sort')
     .at(0)

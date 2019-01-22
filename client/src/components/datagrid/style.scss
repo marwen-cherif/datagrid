@@ -85,3 +85,17 @@ td {
   display: inline-block;
   padding: 0 10px 0 10px;
 }
+
+.placeholder div {
+  background: #7f7f7f;
+  opacity: 0.5;
+
+  div {
+    background: #7f7f7f;
+  }
+}
+
+.delete-action:hover {
+  color: #7f7f7f;
+  opacity: 0.5;
+}

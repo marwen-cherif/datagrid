@@ -24,11 +24,14 @@ export default class DataGrid extends Component {
       sort: [],
       rows: [],
       loading: true,
-      totalRecords: 0
+      totalRecords: 0,
+      columnIdentifier: columns.reduce((acc, elem) => {
+        if (elem.identifier) {
+          acc = elem.name
+        }
+        return acc
+      }, null)
     }
-    this.sortColumn = this.sortColumn.bind(this)
-    this.goTo = this.goTo.bind(this)
-    this.onPageLengthChange = this.onPageLengthChange.bind(this)
   }
 
   componentDidMount() {
@@ -64,7 +67,7 @@ export default class DataGrid extends Component {
     sort = sort.filter((elem) => elem.order)
     this.setState({ ...this.state, loading: true })
 
-    Api.call(this.state, (err, res) => {
+    Api.call({ ...this.state, sort }, (err, res) => {
       if (err)
         return
       let { data, totalRecords } = res
@@ -111,27 +114,60 @@ export default class DataGrid extends Component {
     })
   }
 
+  onColumnsChange(columns) {
+    this.setState({ ...this.state, columns })
+  }
+
+  onRowSelected(row, event) {
+    const target = event.target
+    const value = target.type === 'checkbox' ? target.checked : target.value
+    let { rows, columnIdentifier } = this.state
+    let newState = {
+      ...this.state,
+      rows: rows.map((elem) => {
+        if (elem[columnIdentifier] === row[columnIdentifier]) {
+          elem = { ...row, selected: value === true }
+        }
+        return elem
+      })
+    }
+    this.setState(newState)
+  }
+
+  onRowsRemove() {
+    debugger
+    let { rows } = this.state
+    this.setState({
+      ...this.state,
+      rows: rows.filter((elem) => elem.selected !== true)
+    })
+  }
+
   render() {
-    let { rows, columns, sort, loading, offset, pageLength, totalRecords } = this.state
+    let { rows, columns, sort, loading, offset, pageLength, totalRecords, columnIdentifier } = this.state
     return <div className="table-container">
       <Loader loading={loading} />
       <table className="dataGridTable">
         <DataGridHead
           sort={sort}
           columns={columns}
-          onSort={(column) => this.sortColumn(column)}
+          onSort={this.sortColumn.bind(this)}
+          onColumnsChange={this.onColumnsChange.bind(this)}
+          onRowsRemove={this.onRowsRemove.bind(this)}
         />
         <DataGridBody
           rows={rows}
           columns={columns}
+          onRowSelected={(row, event) => this.onRowSelected.bind(this)(row, event)}
+          columnIdentifier={columnIdentifier}
         />
       </table>
       <Paginator
         offset={offset}
         pageLength={pageLength}
         totalRecords={totalRecords}
-        goTo={this.goTo}
-        onPageLengthChange={this.onPageLengthChange}
+        goTo={this.goTo.bind(this)}
+        onPageLengthChange={this.onPageLengthChange.bind(this)}
       />
     </div>
   }
