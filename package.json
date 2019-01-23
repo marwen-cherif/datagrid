@@ -1,6 +1,7 @@
 {
   "name": "datagrid",
   "version": "1.0.0",
+  "author": "Cherif Marwen <marwen.cherif@gmail.com> (http://www.marwen-cherif.com)",
   "scripts": {
     "all-install": "npm install && cd client && npm install && cd ..",
     "client": "cd client && npm start",
