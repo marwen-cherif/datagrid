@@ -2,6 +2,11 @@
 
 Datagrid is a datatable react component, it will help you to represent all of your data provided by rest API.
 
+## Demo
+
+There is a demo version that is using the component: 
+http://www.datagrid.marwen-cherif.com/
+
 ## Installation
 
 To be able to test the component you can clone the repository then :
