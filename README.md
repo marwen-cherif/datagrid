@@ -4,8 +4,7 @@ Datagrid is a datatable react component, it will help you to represent all of yo
 
 ## Demo
 
-There is a demo version that is using the component: 
-http://www.datagrid.marwen-cherif.com/
+There is a <a href="http://www.datagrid.marwen-cherif.com/" target="_blank">demo</a> version that is using the component.
 
 ## Installation
 
